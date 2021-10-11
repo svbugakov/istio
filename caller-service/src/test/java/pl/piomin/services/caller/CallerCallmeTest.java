@@ -17,8 +17,8 @@ import static io.specto.hoverfly.junit.dsl.HoverflyDsl.service;
 import static io.specto.hoverfly.junit.dsl.HttpBodyConverter.json;
 import static io.specto.hoverfly.junit.dsl.ResponseCreators.success;
 
-@SpringBootTest(properties = {"VERSION = v2"}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@RunWith(SpringRunner.class)
+//@SpringBootTest(properties = {"VERSION = v2"}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+//@RunWith(SpringRunner.class)
 public class CallerCallmeTest {
 
     @ClassRule
@@ -28,7 +28,7 @@ public class CallerCallmeTest {
 
     TestRestTemplate restTemplate = new TestRestTemplate();
 
-    @Test
+   // @Test
     public void callmeIntegration() {
         hoverflyRule.simulate(
             dsl(service("http://callme-service:8080")

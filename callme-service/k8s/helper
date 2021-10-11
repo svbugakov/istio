@@ -1,0 +1,15 @@
+docker build . -t svbugakov/kuber:istio_callme
+docker login -u svbugakov
+docker image push svbugakov/kuber:istio_callme
+kubectl get deployments
+
+kubectl exec --stdin --tty caller-app-7595954cd6-vcrvc -- /bin/bash
+kubectl logs -f caller-app-7595954cd6-99ngc
+curl http://callme-service:8081/callme/ping-test
+curl http://caller-service:8080/caller/ping-with-random-error
+
+kubectl label namespace default istio-injection=enabled
+kubectl get namespace -L istio-injection
+kubectl label namespace default istio-injection-
+
+

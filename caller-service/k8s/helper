@@ -1,0 +1,12 @@
+docker build . -t svbugakov/kuber:istio_caller
+docker login -u svbugakov
+docker image push svbugakov/kuber:istio_caller
+kubectl get deployments
+
+kubectl label namespace default istio-injection=enabled
+kubectl get namespace -L istio-injection
+kubectl label namespace default istio-injection-
+
+minikube dashboard
+
+

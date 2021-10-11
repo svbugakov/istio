@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: callme-service-v1
+  name: callme-app-v1
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: callme-service
+      app: callme-app
       version: v1
   template:
     metadata:
       labels:
-        app: callme-service
+        app: callme-app
         version: v1
     spec:
       containers:
-        - name: callme-service
-          image: piomin/callme-service
-          imagePullPolicy: IfNotPresent
+        - name: callme-app
+          image: svbugakov/kuber:istio_callme
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
           env:
@@ -27,22 +27,22 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: callme-service-v2
+  name: callme-app-v2
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: callme-service
+      app: callme-app
       version: v2
   template:
     metadata:
       labels:
-        app: callme-service
+        app: callme-app
         version: v2
     spec:
       containers:
-        - name: callme-service
-          image: piomin/callme-service
+        - name: callme-app
+          image: svbugakov/kuber:istio_callme
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
@@ -55,11 +55,12 @@ kind: Service
 metadata:
   name: callme-service
   labels:
-    app: callme-service
+    app: callme-app
 spec:
   type: ClusterIP
   ports:
-  - port: 8080
+  - port: 8081
+    targetPort: 8080
     name: http
   selector:
-    app: callme-service
+    app: callme-app

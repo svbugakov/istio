@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 public class CallerApplication {
 
 	public static void main(String[] args) {
+		System.out.println("new 1 version ........");
 		SpringApplication.run(CallerApplication.class, args);
 	}
 
