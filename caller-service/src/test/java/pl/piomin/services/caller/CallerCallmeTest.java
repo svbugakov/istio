@@ -17,8 +17,8 @@ import static io.specto.hoverfly.junit.dsl.HoverflyDsl.service;
 import static io.specto.hoverfly.junit.dsl.HttpBodyConverter.json;
 import static io.specto.hoverfly.junit.dsl.ResponseCreators.success;
 
-//@SpringBootTest(properties = {"VERSION = v2"}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-//@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@RunWith(SpringRunner.class)
 public class CallerCallmeTest {
 
     @ClassRule
@@ -28,14 +28,14 @@ public class CallerCallmeTest {
 
     TestRestTemplate restTemplate = new TestRestTemplate();
 
-   // @Test
+    @Test
     public void callmeIntegration() {
         hoverflyRule.simulate(
-            dsl(service("http://callme-service:8080")
+            dsl(service("http://callme-service:8081")
                 .get("/callme/ping")
-                .willReturn(success().body("I'm callme-service v1.")))
+                .willReturn(success().body("I'm callme-service ")))
         );
         String response = restTemplate.getForObject("http://localhost:" + port + "/caller/ping", String.class);
-        Assert.assertEquals("I'm caller-service v2. Calling... I'm callme-service v1.", response);
+        Assert.assertEquals("I'm caller-service Calling... I'm callme-service ", response);
     }
 }
