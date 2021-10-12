@@ -24,11 +24,11 @@ spec:
         - destination:
             host: callme-service
             subset: v2
-          weight: 80
+          weight: 90
         - destination:
             host: callme-service
             subset: v1
-          weight: 20
+          weight: 10
       retries:
         attempts: 3
         perTryTimeout: 1s
