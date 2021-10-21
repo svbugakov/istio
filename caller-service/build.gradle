@@ -1,0 +1,24 @@
+plugins {
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+}
+
+group = 'svb.inkass'
+version = '01.000.00-SNAPSHOT'
+
+task deploy (type: Copy) {
+    from "build/libs"
+    into "k8s/img"
+    include "*SNAPSHOT.jar"
+}
+
+build.finalizedBy(deploy)
+
+
+bootJar {
+    enabled = true
+}
+
+jar {
+    enabled = true
+}

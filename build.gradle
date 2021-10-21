@@ -1,0 +1,36 @@
+plugins {
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+}
+
+group = 'svb.inkass'
+version = '01.000.00-SNAPSHOT'
+
+allprojects {
+    apply plugin: 'java'
+    sourceCompatibility = '11'
+
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }
+
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        implementation 'org.springframework.boot:spring-boot-starter-actuator'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testImplementation 'io.specto:hoverfly-java:0.14.0'
+        testImplementation('org.junit.vintage:junit-vintage-engine') {
+            exclude group: 'org.hamcrest', module: 'hamcrest-core'
+        }
+        testImplementation 'com.github.tomakehurst:wiremock-jre8:2.29.1'
+    }
+}
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    enabled = true
+}

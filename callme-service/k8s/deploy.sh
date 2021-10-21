@@ -1,5 +1,5 @@
 cd ../
-mvn clean package
+gradle build
 cd k8s
 docker image rm svbugakov/kuber:istio_callme
 docker build . -t svbugakov/kuber:istio_callme

@@ -7,7 +7,7 @@ MAINTAINER svbugakov@gmail.com
 EXPOSE 8080
 
 # executable ADD service-one-5.0.0-SNAPSHOT.jar app.jar
-ADD img/callme-service-1.1.0.jar app.jar
+ADD img/callme-service-01.000.00-SNAPSHOT.jar app.jar
 
 # run app
 RUN /bin/sh -c 'touch /app.jar'

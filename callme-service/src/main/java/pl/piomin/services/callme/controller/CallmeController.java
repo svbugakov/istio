@@ -25,7 +25,7 @@ public class CallmeController {
     @ResponseBody
     public String pingtest() {
         LOGGER.info("PingTest  start");
-        return "I'm caller-me test...";
+        return "I'm caller-me test v2...";
     }
 
 
