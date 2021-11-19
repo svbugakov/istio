@@ -16,13 +16,6 @@ allprojects {
     }
 
     dependencies {
-        implementation 'org.springframework.boot:spring-boot-starter-web'
-        implementation 'org.springframework.boot:spring-boot-starter-actuator'
-        implementation 'org.springframework.boot:spring-boot-starter-aop'
-
-        implementation 'org.springframework:spring-tx'
-
-        testImplementation 'org.springframework.boot:spring-boot-starter-test'
         testImplementation 'io.specto:hoverfly-java:0.14.0'
         testImplementation('org.junit.vintage:junit-vintage-engine') {
             exclude group: 'org.hamcrest', module: 'hamcrest-core'

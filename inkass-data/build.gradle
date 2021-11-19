@@ -1,0 +1,25 @@
+plugins {
+    id 'java'
+}
+
+
+group 'svb.inkass'
+version '01.000.00-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.2'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+
+jar {
+    enabled = true
+}

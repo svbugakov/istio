@@ -17,3 +17,5 @@ rootProject.name = 'sample-istio-services'
 
 include 'caller-service'
 include 'callme-service'
+include 'inkass-data'
+

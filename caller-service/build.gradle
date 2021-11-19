@@ -6,6 +6,15 @@ plugins {
 group = 'svb.inkass'
 version = '01.000.00-SNAPSHOT'
 
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+    implementation 'org.springframework:spring-tx'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
 task deploy (type: Copy) {
     from "build/libs"
     into "k8s/img"
