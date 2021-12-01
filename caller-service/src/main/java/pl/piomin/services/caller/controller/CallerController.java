@@ -1,15 +1,26 @@
 package pl.piomin.services.caller.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.info.BuildProperties;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import pl.piomin.services.caller.domen.Route;
 import pl.piomin.services.caller.services.DBService;
+import svb.inkass.data.bag.Bag;
+import svb.inkass.data.bag.Currency;
+import svb.inkass.dto.BagDTO;
+import svb.inkass.utils.ConverterJson;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.stream.Collectors;
 
 @RestController
@@ -35,6 +46,29 @@ public class CallerController {
         dbService.addRoute(route, inkassator);
         LOGGER.info("Success register route {} {}", route, inkassator);
         return String.format("success registered [route=%s, inkassator=%s]", route, inkassator);
+    }
+
+    @RequestMapping(value = "/takeBag", method = RequestMethod.POST)
+    @ResponseBody
+    public String takeBag(
+            @RequestParam("bagID") final String bagID,
+            @RequestParam("sum") final BigDecimal sum,
+            @RequestParam("descr") final String descr,
+            @RequestParam("cur") final Currency cur
+    ) {
+        final Bag bag = new Bag(bagID, sum, descr, cur);
+        final BagDTO bagDTO = new BagDTO(bag, convertLocalDateToString(LocalDate.now()));
+        final String url = "http://callme-service:8081/callme/handleBag";
+
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<String> entity = new HttpEntity<>(convertDtoToJson(bagDTO), headers);
+        String answer = restTemplate.postForObject(url, entity, String.class);
+
+        LOGGER.info("Calling: response={}", answer);
+        return String.format("success take bag [bagID=%s, sum=%s, descr=%s]", bagID, sum, descr);
     }
 
     @RequestMapping(value = "/getAllRoute", method = RequestMethod.GET)
@@ -69,5 +103,22 @@ public class CallerController {
         LOGGER.info("Calling: response={}", response);
         return "I'm caller-service Calling... " + response;
     }
+
+    private String convertLocalDateToString(final LocalDate now) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return now.format(formatter);
+    }
+
+    private String convertDtoToJson(final BagDTO bagDTO) {
+        String requestJson;
+        try {
+            requestJson = ConverterJson.convertObjectToJsonString(bagDTO);
+        } catch (final JsonProcessingException e) {
+            throw new RuntimeException(String.format("convertDtoToJson error bagDTO = [%s]", bagDTO), e);
+        }
+
+        return requestJson;
+    }
+
 
 }

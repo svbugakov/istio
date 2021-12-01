@@ -13,7 +13,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-aop'
     implementation 'org.springframework:spring-tx'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation project(':inkass-data')
 }
+
 
 task deploy (type: Copy) {
     from "build/libs"

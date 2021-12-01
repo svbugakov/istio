@@ -6,6 +6,7 @@ import pl.piomin.services.callme.db.DB;
 import pl.piomin.services.callme.model.Balance;
 import svb.inkass.data.bag.Currency;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Optional;
@@ -27,5 +28,11 @@ public class BalanceService {
             throw new RuntimeException(error);
         }
         return balance.get();
+    }
+
+    public void increaseBalanceOnCurrencyAndDate(final LocalDate date, final Currency currency, BigDecimal sum) {
+        final Balance balance = getBalanceOnCurrencyAndDate(date, currency);
+        balance.setBal(balance.getBal().add(sum));
+        db.getDbBalance().put(date, balance);
     }
 }

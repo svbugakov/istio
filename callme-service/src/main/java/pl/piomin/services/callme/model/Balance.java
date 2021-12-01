@@ -8,7 +8,7 @@ import java.time.LocalDate;
 public class Balance {
     private final LocalDate dt;
     private final Currency cur;
-    private final BigDecimal bal;
+    private BigDecimal bal;
 
     public Balance(LocalDate dt, Currency cur, BigDecimal bal) {
         this.dt = dt;
@@ -26,5 +26,9 @@ public class Balance {
 
     public BigDecimal getBal() {
         return bal;
+    }
+
+    public void setBal(BigDecimal bal) {
+        this.bal = bal;
     }
 }

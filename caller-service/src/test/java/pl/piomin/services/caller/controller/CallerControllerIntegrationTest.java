@@ -1,5 +1,7 @@
 package pl.piomin.services.caller.controller;
 
+import io.specto.hoverfly.junit.rule.HoverflyRule;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -20,6 +22,10 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
+import static io.specto.hoverfly.junit.core.SimulationSource.dsl;
+import static io.specto.hoverfly.junit.dsl.HoverflyDsl.service;
+import static io.specto.hoverfly.junit.dsl.ResponseCreators.success;
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
@@ -34,10 +40,14 @@ public class CallerControllerIntegrationTest {
     @MockBean
     private DBService dbService;
 
+    @ClassRule
+    public static HoverflyRule hoverflyRule = HoverflyRule.inSimulationMode();
+
     @Test
     public void whenAddRoute_RouteShouldRegister() throws Exception {
         final String idRoute = "test";
         final String nameInkass = "Ivanov";
+
 
         mockMvc.perform(MockMvcRequestBuilders.get("/caller/registerRoute")
                         .param("route", idRoute)
@@ -64,6 +74,28 @@ public class CallerControllerIntegrationTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().
                         string(org.hamcrest.Matchers.containsString("Route{id='test', date=2021-11-18, inkassName='Ivanov'}")));
+    }
+
+    @Test
+    public void whenCallTakeBag_thenShouldBagSuccessTake() throws Exception {
+        hoverflyRule.simulate(
+                dsl(service("http://callme-service:8081")
+                        .post("/callme/handleBag")
+                        .anyBody()
+                        .willReturn(success().body("success handle bag testID1")))
+        );
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/caller/takeBag")
+                        .param("bagID", "testID1")
+                        .param("sum", "10000")
+                        .param("descr", "true bag")
+                        .param("cur", "USD")
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().
+                        string(org.hamcrest.Matchers.containsString("success take bag [bagID=testID1, sum=10000, descr=true bag]")));
+
     }
 
 }

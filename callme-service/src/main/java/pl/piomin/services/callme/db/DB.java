@@ -7,20 +7,20 @@ import pl.piomin.services.callme.model.Balance;
 import svb.inkass.data.bag.Bag;
 
 import java.time.LocalDate;
-import java.util.Map;
-import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 @Component
 public class DB {
-    private Map<String, Bag> dbRouteBags = new ConcurrentSkipListMap<>();
+    private Set<Bag> dbRouteBags = new ConcurrentSkipListSet<>();
     private Multimap<LocalDate, Balance> dbBalance = ArrayListMultimap.create();
 
 
-    public Map<String, Bag> getDbRouteBags() {
+    public Set<Bag> getDbRouteBags() {
         return dbRouteBags;
     }
 
-    public void setDbRouteBags(Map<String, Bag> dbRouteBags) {
+    public void setDbRouteBags(Set<Bag> dbRouteBags) {
         this.dbRouteBags = dbRouteBags;
     }
 
