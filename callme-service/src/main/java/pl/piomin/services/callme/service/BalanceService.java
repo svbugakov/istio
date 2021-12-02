@@ -22,10 +22,11 @@ public class BalanceService {
     }
 
     public Balance getBalanceOnCurrencyAndDate(final LocalDate date, final Currency currency) {
-        final Optional<Balance> balance = db.getDbBalance().get(date).stream().filter(t -> t.getCur() == currency).findFirst();
+        Optional<Balance> balance = db.getDbBalance().get(date).stream().filter(t -> t.getCur() == currency).findFirst();
         if (balance.isEmpty()) {
-            final String error = String.format("Balance on %s - %s absent!", date.toString(), currency);
-            throw new RuntimeException(error);
+            final Balance balanceNew = new Balance(date, currency, new BigDecimal(0));
+            db.getDbBalance().put(date, balanceNew);
+            balance = Optional.of(balanceNew);
         }
         return balance.get();
     }

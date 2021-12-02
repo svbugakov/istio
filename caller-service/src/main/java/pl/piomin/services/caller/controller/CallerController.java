@@ -29,7 +29,6 @@ public class CallerController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CallerController.class);
 
-    //    @Autowired
     BuildProperties buildProperties;
     @Autowired
     RestTemplate restTemplate;
@@ -56,10 +55,10 @@ public class CallerController {
             @RequestParam("descr") final String descr,
             @RequestParam("cur") final Currency cur
     ) {
+        LOGGER.info("Start takeBag, bagID={}, sum= {}, descr={}, cur={}", bagID, sum, descr, cur);
         final Bag bag = new Bag(bagID, sum, descr, cur);
         final BagDTO bagDTO = new BagDTO(bag, convertLocalDateToString(LocalDate.now()));
         final String url = "http://callme-service:8081/callme/handleBag";
-
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -67,7 +66,7 @@ public class CallerController {
         HttpEntity<String> entity = new HttpEntity<>(convertDtoToJson(bagDTO), headers);
         String answer = restTemplate.postForObject(url, entity, String.class);
 
-        LOGGER.info("Calling: response={}", answer);
+        LOGGER.info("Finish takeBag, response={}", answer);
         return String.format("success take bag [bagID=%s, sum=%s, descr=%s]", bagID, sum, descr);
     }
 
@@ -82,7 +81,7 @@ public class CallerController {
     @GetMapping("/ping")
     public String ping() {
         LOGGER.info("Ping start");
-        String response = restTemplate.getForObject("http://callme-service:8081/callme/ping", String.class);
+        String response = restTemplate.getForObject("http://callme-service:8081/callme/ping222", String.class);
         LOGGER.info("Calling: response={}", response);
         return "I'm caller-service Calling... " + response;
     }

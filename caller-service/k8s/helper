@@ -10,6 +10,7 @@ kubectl label namespace default istio-injection-
 minikube dashboard
 
 curl -X GET "http://caller-service:8080/caller/registerRoute?route=2&inkassator=soul"
+curl -X POST "http://caller-service:8080/caller/takeBag?bagID=1&sum=1000&descr=firsBag&cur=USD"
 curl  http://caller-service:8080/caller/ping-with-random-error
 
 

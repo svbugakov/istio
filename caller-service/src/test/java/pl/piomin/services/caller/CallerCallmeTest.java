@@ -29,7 +29,7 @@ public class CallerCallmeTest {
     public void callmeIntegration() {
         hoverflyRule.simulate(
             dsl(service("http://callme-service:8081")
-                .get("/callme/ping")
+                .get("/callme/ping222")
                 .willReturn(success().body("I'm callme-service ")))
         );
         String response = restTemplate.getForObject("http://localhost:" + port + "/caller/ping", String.class);

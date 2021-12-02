@@ -52,9 +52,9 @@ public class CallmeController {
     }
 
 
-    @GetMapping("/ping")
+    @GetMapping("/ping222")
     public String ping() {
-        LOGGER.info("Ping callme");
+        LOGGER.info("Ping callme222");
         return "I'm callme-service ";
     }
 

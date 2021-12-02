@@ -85,5 +85,26 @@ public class BalanceServiceTest {
         Assert.assertEquals(checkSum, sum.add(sum));
     }
 
+    @Test
+    public void check_whenIncreaseSumAndBalanceNotExistsOnDate_thenBalanceIncreaseCorrect() {
+        final LocalDate ld = LocalDate.now();
+        final BigDecimal sum = new BigDecimal(10);
+
+        final Multimap<LocalDate, Balance> dbBalance = ArrayListMultimap.create();
+        Mockito.when(db.getDbBalance()).thenReturn(dbBalance);
+
+        balanceService.increaseBalanceOnCurrencyAndDate(ld, Currency.USD, sum);
+
+        Optional<Balance> bal = balanceService.getBalanceOnDate(ld).stream().filter(t -> t.getDt() == ld).findFirst();
+
+        if (bal.isEmpty()) {
+            Assert.fail("Bal not found!");
+        }
+
+        final BigDecimal checkSum = bal.get().getBal();
+
+        Assert.assertEquals(checkSum, sum);
+    }
+
 
 }

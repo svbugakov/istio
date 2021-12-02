@@ -61,4 +61,20 @@ public class BagHandlerServiceTest {
         Mockito.verify(balanceService, Mockito.times(1))
                 .increaseBalanceOnCurrencyAndDate(Mockito.eq(ld), Mockito.eq(bag.getCur()), Mockito.eq(sum));
     }
+
+
+    @Test
+    public void shouldBagHandledSuccess1() {
+        final LocalDate ld = LocalDate.now();
+        final Set<Bag> bagsHandled = new HashSet<>();
+        final BigDecimal sum = new BigDecimal(100);
+        final Bag bag = new Bag("1", sum, "test1", Currency.USD);
+        final Bag bag2 = new Bag("2", sum, "test1", Currency.USD);
+       // Mockito.when(db.getDbRouteBags()).thenReturn(bagsHandled);
+
+        bagHandlerService.handleBag(bag, ld);
+
+        Mockito.verify(balanceService, Mockito.times(1))
+                .increaseBalanceOnCurrencyAndDate(Mockito.eq(ld), Mockito.eq(bag.getCur()), Mockito.eq(sum));
+    }
 }

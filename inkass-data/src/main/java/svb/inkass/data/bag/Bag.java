@@ -3,7 +3,7 @@ package svb.inkass.data.bag;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class Bag {
+public class Bag implements Comparable<Bag> {
     private String id;
     private BigDecimal sum;
     private String descr;
@@ -72,5 +72,10 @@ public class Bag {
                 ", descr='" + descr + '\'' +
                 ", cur=" + cur +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Bag bag) {
+        return bag.getId().compareTo(this.getId());
     }
 }
